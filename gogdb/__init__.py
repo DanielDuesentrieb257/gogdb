@@ -1,11 +1,11 @@
 from flask import Flask
-
-
 app = Flask("gogdb")
 
+from gogdb.gogdbapi import API
+api = API('https://api.gog-db.info')
+
 import gogdb.config
-#from gogdb.database import db
 import gogdb.assets
-#import gogdb.model
 import gogdb.filters
 import gogdb.views
+

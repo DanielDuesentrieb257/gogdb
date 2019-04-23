@@ -1,15 +1,22 @@
 import flask
 
-from gogdb import app
-#from gogdb.model import ChangeRecord
+from gogdb import app, api
 from gogdb.views.pagination import calc_pageinfo
+import asyncio
 
 ITEMS_PER_PAGE = 100
 
 
 @app.route("/changelog")
 def changelog():
-    pass
+    page = int(flask.request.args.get("page", "1"))
+    limit = ITEMS_PER_PAGE
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    result = loop.run_until_complete(api.list_changes(limit, page))
+    loop.close()
+    page_info = calc_pageinfo(page, int(result['count']), limit)
     '''
     page = int(flask.request.args.get("page", "1"))
 
@@ -20,7 +27,6 @@ def changelog():
         ChangeRecord.timestamp, ChangeRecord.type_prim, ChangeRecord.prod_id
     ).count()
 
-    page_info = calc_pageinfo(page, total_entries, ITEMS_PER_PAGE)
 
     changes = db.session.query(
         ChangeRecord.timestamp, ChangeRecord.type_prim, ChangeRecord.prod_id,
@@ -37,7 +43,7 @@ def changelog():
         "changelog", page=page_info["page"] - 1)
     page_info["next_link"] = flask.url_for(
         "changelog", page=page_info["page"] + 1)
+    '''
 
     return flask.render_template(
-        "changelog.html", changes=changes, page_info=page_info)
-    '''
+        "changelog.html", changes=result['records'], page_info=page_info)
