@@ -18,7 +18,6 @@ app.config["ASSETS_MANIFEST"] = "file:" + os.path.join(app.root_path, "generated
 app.config["ASSETS_CACHE"] = False
 app.config["ASSETS_LOAD_PATH"] = [os.path.join(app.root_path, "static")]
 
-app.config.from_envvar("GOGDB_CONFIG")
 
 app.jinja_env.lstrip_blocks = app.config["JINJA_LSTRIP_BLOCKS"]
 app.jinja_env.trim_blocks = app.config["JINJA_TRIM_BLOCKS"]

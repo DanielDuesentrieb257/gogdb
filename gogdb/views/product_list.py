@@ -2,10 +2,8 @@ import string
 import datetime
 
 import flask
-import sqlalchemy
-from sqlalchemy import orm
 
-from gogdb import app, db, model
+from gogdb import app
 from gogdb.views.pagination import calc_pageinfo
 
 
@@ -21,6 +19,8 @@ def normalize_search(title):
 
 @app.route("/products")
 def product_list():
+    pass
+    '''
     page = int(flask.request.args.get("page", "1"))
     search = flask.request.args.get("search", "").strip()
     search_norm = normalize_search(search)
@@ -76,3 +76,4 @@ def product_list():
         page_info=page_info,
         search=search
     )
+    '''

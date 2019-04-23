@@ -1,8 +1,7 @@
 import flask
-import sqlalchemy
 
-from gogdb import app, db, model
-from gogdb.model import ChangeRecord
+from gogdb import app
+#from gogdb.model import ChangeRecord
 from gogdb.views.pagination import calc_pageinfo
 
 ITEMS_PER_PAGE = 100
@@ -10,6 +9,8 @@ ITEMS_PER_PAGE = 100
 
 @app.route("/changelog")
 def changelog():
+    pass
+    '''
     page = int(flask.request.args.get("page", "1"))
 
     # Get total number of entries
@@ -39,4 +40,4 @@ def changelog():
 
     return flask.render_template(
         "changelog.html", changes=changes, page_info=page_info)
-
+    '''
