@@ -3,8 +3,7 @@
 {% set title %}Changelog{% endset %}
 
 {% block link %}
-{#<link rel="alternate" type="application/atom+xml" title="Atom Feed for GOG Database" href="{{ url_for('changelog_atom') }}">#}
-<link rel="alternate" type="application/atom+xml" title="Atom Feed for GOG Database" href="https://api.gog-db.info">
+<link rel="alternate" type="application/atom+xml" title="Atom Feed for GOG Database" href="{{ url_for('changelog_atom') }}">
 {% endblock %}
 
 {% block content %}
@@ -12,7 +11,7 @@
 
 <div class="textbox shadow">
   Summary of all product changes, visit Extended Changelog
-  {#<a href="{{ url_for('changelog_ext') }}">Extended Changelog</a>-->#}
+  <a href="{{ url_for('changelog_ext') }}">Extended Changelog</a>
   for a detailed overview.
 </div>
 
@@ -20,10 +19,9 @@
   {% for record in changes %}
   <tr>
     <td class="col-change-id">
-        {#<a href="{{ url_for('product_info', prod_id=record.prod_id) }}#changelog">
+        <a href="{{ url_for('product_info', prod_id=record['game']) }}#changelog">
         {{ record['game'] }}
-        </a>#}
-        {{ record['game'] }}
+        </a>
     </td>
     <td class="col-change-name">
         {{ record['change'] }}

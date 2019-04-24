@@ -1,14 +1,15 @@
 import copy
 
 import flask
-from sqlalchemy import orm
 from arrow.arrow import Arrow
 
-from gogdb import app, db, model
+from gogdb import app
 
 
 @app.route("/product/<int:prod_id>")
 def product_info(prod_id):
+    pass
+    '''
     product = db.session.query(model.Product) \
         .filter_by(id=prod_id) \
         .one_or_none()
@@ -54,3 +55,4 @@ def product_info(prod_id):
         pricehistory=history_chart,
         priceframes=priceframes
     )
+    '''

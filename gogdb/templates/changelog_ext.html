@@ -22,31 +22,32 @@
 {% for recordgroup in changes %}
 <div class="shadow">
   <div class="changelog-title">
-    <a href="{{ url_for('product_info', prod_id=recordgroup[0].prod_id) }}#changelog" class="hoveronly">
+      {# <a href="{{ url_for('product_info', prod_id=recordgroup[0]['game']) }}#changelog" class="hoveronly">
       <b>{{ recordgroup[0].product.title | default("Unknown", true) }}</b><!--
- --></a>
-    - {{ recordgroup[0].prod_id }}
+      --></a> #}
+    {{ recordgroup[0]['game'] }}
   </div>
 <table class="changelog-table rowborder">
   {% for record in recordgroup %}
   <tr>
     <td class="col-change-icon">
-      {% if record.action == "add" %}
+      {% if "Add" in record['change'] %}
         <i class="fa fa-plus color-add" aria-hidden="true"></i>
         <span class="nocss">+</span>
-      {% elif record.action == "del" %}
+      {% elif "Del" in record['change'] %}
         <i class="fa fa-minus color-del" aria-hidden="true"></i>
         <span class="nocss">-</span>
-      {% elif record.action == "change" %}
+      {% elif "Change" in record['change'] %}
         <i class="fa fa-circle color-change" aria-hidden="true"></i>
         <span class="nocss">o</span>
       {% endif %}
     </td>
     <td class="col-change-desc">
-      {{ format_record(record) }}
+        {# {{ format_record(record) }} #}
+      {{ record['change'] }}
     </td>
     <td class="col-change-date">
-      {{ record.timestamp.strftime("%Y-%m-%d") }}
+      {{ record['dateTime'] }}
     </td>
   </tr>
   {% endfor %}

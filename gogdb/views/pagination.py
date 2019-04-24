@@ -1,9 +1,8 @@
-import math
+import math, flask
 
 
 
-def calc_pageinfo(page, num_products, items_per_page):
-    num_pages = int(math.ceil(num_products / items_per_page))
+def calc_pageinfo(page, num_pages, items_per_page):
     page = min(max(page, 1), num_pages)
     offset = (page - 1) * items_per_page
     page_info = {
@@ -13,7 +12,7 @@ def calc_pageinfo(page, num_products, items_per_page):
         "num_pages": num_pages,
         "from": offset,
         "to": offset + items_per_page,
-        "prev_link": "", # Filled in later
+        "prev_link": "",
         "next_link": ""
     }
     return page_info
