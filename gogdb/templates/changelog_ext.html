@@ -4,9 +4,11 @@
 
 {% set title %}Extended Changelog{% endset %}
 
+{#
 {% block link %}
 <link rel="alternate" type="application/atom+xml" title="Atom Feed for GOG Database" href="{{ url_for('changelog_atom') }}">
 {% endblock %}
+#}
 
 {% block content %}
 <h1>{{ title }}</h1>
@@ -14,9 +16,11 @@
 <div class="textbox shadow">
   Detailed changelog for all products, visit
   <a href="{{ url_for('changelog') }}">Changelog</a>
-  for a summary. This site is also available as an
+  for a summary. 
+  {# This site is also available as an
   <a href="{{ url_for('changelog_atom') }}">Atom feed</a>
   (like RSS).
+  #}
 </div>
 
 {% for recordgroup in changes %}
@@ -25,7 +29,9 @@
       {# <a href="{{ url_for('product_info', prod_id=recordgroup[0]['game']) }}#changelog" class="hoveronly">
       <b>{{ recordgroup[0].product.title | default("Unknown", true) }}</b><!--
       --></a> #}
-    {{ recordgroup[0]['game'] }}
+    <a href="{{ url_for('product_info', prod_id=recordgroup[0]['game']) }}#changelog" class="hoveronly">
+      <b>{{ recordgroup[0]['game'] }}</b>
+    </a>
   </div>
 <table class="changelog-table rowborder">
   {% for record in recordgroup %}
