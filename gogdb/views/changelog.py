@@ -6,6 +6,7 @@ import asyncio
 
 
 @app.route("/changelog")
+@app.route("/changelog/")
 def changelog():
     page = int(flask.request.args.get("page", "1"))
     limit = int(flask.request.args.get("limit", "100"))

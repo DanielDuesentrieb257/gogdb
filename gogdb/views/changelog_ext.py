@@ -51,9 +51,11 @@ def changelog_ext_page(view):
         )
 
 @app.route("/changelog.xml")
+@app.route("/changelog.xml/")
 def changelog_atom():
     return changelog_ext_page("changelog_atom")
 
 @app.route("/changelog-ext")
+@app.route("/changelog-ext/")
 def changelog_ext():
     return changelog_ext_page("changelog_ext")

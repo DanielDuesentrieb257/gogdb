@@ -12,6 +12,5 @@ import gogdb.views.robots
 import gogdb.views.product_list
 import gogdb.views.changelog
 import gogdb.views.changelog_ext
-import gogdb.views.legal
 import gogdb.views.generated
 import gogdb.views.product_info
