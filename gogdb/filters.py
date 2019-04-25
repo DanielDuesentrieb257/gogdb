@@ -7,7 +7,7 @@ from gogdb import app
 OS_ICON_ELEMENTS = {
     "windows": '<i class="fa fa-windows" aria-hidden="true"></i>' \
         '<span class="nocss">W</span>',
-    "mac": '<i class="fa fa-apple" aria-hidden="true"></i>' \
+    "osx": '<i class="fa fa-apple" aria-hidden="true"></i>' \
         '<span class="nocss">M</span>',
     "linux": '<i class="fa fa-linux" aria-hidden="true"></i>' \
         '<span class="nocss">L</span>'

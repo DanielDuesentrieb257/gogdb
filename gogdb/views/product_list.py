@@ -1,9 +1,10 @@
 import string
 import datetime
+import asyncio
 
 import flask
 
-from gogdb import app
+from gogdb import app, api
 from gogdb.views.pagination import calc_pageinfo
 
 
@@ -18,62 +19,34 @@ def normalize_search(title):
 
 
 @app.route("/products")
+@app.route("/products/")
 def product_list():
-    pass
-    '''
     page = int(flask.request.args.get("page", "1"))
+    limit = int(flask.request.args.get('limit', PRODUCTS_PER_PAGE))
     search = flask.request.args.get("search", "").strip()
     search_norm = normalize_search(search)
-    search_words = search_norm.split()
 
-    if not search_words:
-        # Predict page count
-        num_products = db.session.query(
-            sqlalchemy.func.count(model.Product.id)
-            ).one()[0]
-        page_info = calc_pageinfo(page, num_products, PRODUCTS_PER_PAGE)
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    result = loop.run_until_complete(api.query_products(search_norm, limit, page))
+    loop.close()
 
-        products = db.session.query(model.Product) \
-            .order_by(
-                (model.Product.release_date >
-                sqlalchemy.sql.functions.now()).asc()) \
-            .order_by(
-                sqlalchemy.sql.functions.coalesce(
-                    model.Product.release_date,
-                    datetime.date(1, 1, 1)).desc()) \
-            .offset(page_info["from"]).limit(PRODUCTS_PER_PAGE)
+    page_info = calc_pageinfo(page, result['pages'], limit)
 
-    else:
-        query = db.session.query(model.Product) \
-            .order_by(
-                sqlalchemy.sql.functions.char_length(model.Product.title))
-
-        # Add a filter for each search word
-        for word in search_words:
-            word_cond = model.Product.title_norm.like("%{}%".format(word))
-            if word.isdecimal():
-                word_cond |= (model.Product.id == int(word))
-            query = query.filter(word_cond)
-
-        products = query.all()
-        page_info = calc_pageinfo(page, len(products), PRODUCTS_PER_PAGE)
-        products = products[page_info["from"]:page_info["to"]]
-
-    if search:
+    if search != "":
         page_info["prev_link"] = flask.url_for(
-            "product_list", page=page_info["page"] - 1, search=search)
+            "product_list", page=page_info["page"] - 1, search=search, limit=limit)
         page_info["next_link"] = flask.url_for(
-            "product_list", page=page_info["page"] + 1, search=search)
+            "product_list", page=page_info["page"] + 1, search=search, limit=limit)
     else:
         page_info["prev_link"] = flask.url_for(
-            "product_list", page=page_info["page"] - 1)
+            "product_list", page=page_info["page"] - 1, limit=limit)
         page_info["next_link"] = flask.url_for(
-            "product_list", page=page_info["page"] + 1)
+            "product_list", page=page_info["page"] + 1, limit=limit)
 
     return flask.render_template(
         "product_list.html",
-        products=products,
+        products=result['products'],
         page_info=page_info,
         search=search
     )
-    '''

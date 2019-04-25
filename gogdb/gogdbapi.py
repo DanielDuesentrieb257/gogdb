@@ -144,8 +144,11 @@ class API():
         self.__hosts['root'] = value
 
 
-    async def query_products(self, string):
-        params = {'query':string, 'limit':0}
+    async def query_products(self, string='', limit=20, page=1):
+        if string == '':
+            params = {'limit':limit, 'page':page}
+        else:
+            params = {'query':string, 'limit':limit, 'page':page}
 
         async with APIRequester(self.__retries) as request:
 
