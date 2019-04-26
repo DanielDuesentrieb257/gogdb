@@ -1,14 +1,28 @@
 import copy
 
 import flask
+import asyncio
 from arrow.arrow import Arrow
 
-from gogdb import app
+from gogdb import app,api
 
 
 @app.route("/product/<int:prod_id>")
+@app.route("/product/<int:prod_id>/")
 def product_info(prod_id):
-    pass
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    product = loop.run_until_complete(api.product_detail(prod_id))
+    loop.close()
+
+    if 'error' in product:
+        flask.abort(404)
+
+    return flask.render_template(
+        "product_info.html",
+        product=product
+    )
     '''
     product = db.session.query(model.Product) \
         .filter_by(id=prod_id) \

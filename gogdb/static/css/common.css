@@ -196,3 +196,12 @@ a.hoverlight:hover {
   margin: 20px 0;
   color: #888888;
 }
+
+.zoom {
+  transition: transform .2s;
+  margin: 0 auto;
+}
+
+.zoom:hover{
+  transform: scale(1.1);
+}
