@@ -2,6 +2,7 @@ import os
 
 from gogdb import app
 
+APIHOST = ""
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
