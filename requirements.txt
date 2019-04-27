@@ -6,3 +6,4 @@ aiodns
 cchardet
 fake_useragent
 arrow
+uwsgi
