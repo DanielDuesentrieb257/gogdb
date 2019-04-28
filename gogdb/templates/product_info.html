@@ -121,15 +121,11 @@ body{
         {% endif %}
     </div>
 </div>
-{#
-{% if product.access == 0 %}
+{% if product['additionalRequirements'] != "" %}
 <div class="textbox shadow">
-    <strong>
-        This product can't currently be accessed, so the data might be outdated!
-    </strong>
+    {{ product['additionalRequirements'] | safe }}
 </div>
 {% endif %}
-#}
 
 {#
 <div id="tabs-container" class="shadow">
