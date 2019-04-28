@@ -15,23 +15,27 @@ function init_chart()
   }
   chart_init_called = true;
 
-  var pricehistory = JSON.parse(document.getElementById("pricehistory-json").innerHTML)
-  pricehistory["values"] = pricehistory["values"].map(null_to_nan);
+  var discount= JSON.parse(document.getElementById("discount-json").innerHTML)
+  discount["values"] = discount["values"].map(null_to_nan);
 
   var config = {
     type: "line",
     data: {
-      labels: pricehistory["labels"],
+      labels: discount["labels"],
       datasets: [{
-        label: "Price",
+        label: "Discount",
         fill: false,
         steppedLine: true,
         borderColor: "rgb(241, 142, 0)",
         backgroundColor: "rgb(241, 142, 0)",
-        data: pricehistory["values"],
+        data: discount["values"],
       }]
     },
     options: {
+      title: {
+        display: true,
+        text: 'Discount Records'
+      },
       scales: {
         xAxes: [{
           type: "time",
@@ -41,8 +45,9 @@ function init_chart()
         }],
         yAxes: [{
           ticks: {
-            beginAtZero: true,
-            suggestedMax: Math.round(pricehistory["max"]) + 1
+              min: 0,
+              max: 100,
+              reverse: true
           }
         }]
       },

@@ -8,11 +8,9 @@
 {% assets "js-prodinfo" %}
 <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
-{#
-<script type="application/json" id="pricehistory-json">
-    {{ pricehistory | tojson | safe }}
+<script type="application/json" id="discount-json">
+    {{ discount | tojson | safe }}
 </script>
-#}
 {% endblock js %}
 
 {% block style %}
@@ -33,14 +31,7 @@ body{
     {% endif %}
     <h1 style="white-space: nowrap; ">{{ title }}</h1>
 </div>
-{#
-{% if product.title is none %}
-<div class="textbox shadow">
-    No information available. Something referenced this ID but we
-    currently don't have access to its data.
-</div>
-{% else %}
-#}
+
 <div id="info-container">
     <div id="info-container-left">
         <table id="info-table" class="shadow cellborder">
@@ -48,12 +39,6 @@ body{
                 <td>Product ID</td>
                 <td>{{ product['id'] }}</td>
             </tr>
-            {#
-            <tr>
-                <td>Slug</td>
-                <td>{{ product.slug }}</td>
-            </tr>
-            #}
             <tr>
                 <td>Product Type</td>
                 <td>{{ product['productType'] }}</td>
@@ -127,30 +112,53 @@ body{
 </div>
 {% endif %}
 
-{#
 <div id="tabs-container" class="shadow">
     <a href="#prices" class="tabs-item no-underline">Prices</a>
     <a href="#details" class="tabs-item no-underline">Details</a>
+    {#
     <a href="#downloads" class="tabs-item no-underline">Downloads</a>
     <a href="#builds" class="tabs-item no-underline">Builds</a>
     <a href="#media" class="tabs-item no-underline">Media</a>
     <a href="#changelog" class="tabs-item no-underline">Changelog</a>
+    #}
 </div>
 
 <div id="tab-prices" class="tab">
     <h2>Prices</h2>
-
-    {% if priceframes %}
+    {% if discount['values'] | length > 0 %}
     <div id="chart-container">
         <canvas id="chart-canvas" class="shadow"></canvas>
     </div>
+    {% endif %}
+    {% if baseprice | length > 0 %}
+    <table class="shadow cellborder">
+        <tr>
+            <th>CountryCode</th>
+            <th>BasePrice</th>
+            <th>Currency</th>
+        </tr>
+        {% for price in baseprice %}
+        <tr>
+            <td>{{ price['country'] }}</td>
+            <td>{{ price['price'] }}</td>
+            <td>{{ price['currency'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="textbox shadow">
+        No price data available.
+    </div>
+    {% endif %}
+</div>
+{#
+
+    {% if priceframes %}
     <table class="shadow cellborder">
         <tr>
             <th>Start</th>
-            <th>End</th>
             <th>Base</th>
             <th>Final</th>
-            <th>Discount</th>
         </tr>
         {% for price in priceframes %}
         <tr>
