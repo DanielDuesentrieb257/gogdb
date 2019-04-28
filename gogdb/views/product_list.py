@@ -10,7 +10,7 @@ from gogdb.views.pagination import calc_pageinfo
 
 PRODUCTS_PER_PAGE = 20
 
-ALLOWED_CHARS = set(string.ascii_lowercase + string.digits + ' ')
+ALLOWED_CHARS = set(string.ascii_lowercase + string.digits + ' ' + "'" + ":")
 
 
 
