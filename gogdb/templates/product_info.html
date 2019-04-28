@@ -151,44 +151,11 @@ body{
     </div>
     {% endif %}
 </div>
-{#
-
-    {% if priceframes %}
-    <table class="shadow cellborder">
-        <tr>
-            <th>Start</th>
-            <th>Base</th>
-            <th>Final</th>
-        </tr>
-        {% for price in priceframes %}
-        <tr>
-            <td>{{ price.start.format("MMMM D, YYYY") }}</td>
-            <td>{{ price.end.format("MMMM D, YYYY") }}</td>
-            {% if price.price_base is none or price.price_final is none %}
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            {% else %}
-            <td>${{ price.price_base }}</td>
-            <td>${{ price.price_final }}</td>
-            {% if price.discount > 0 %}
-            <td>{{ price.discount }}%</td>
-            {% else %}
-            <td>-</td>
-            {% endif %}
-            {% endif %}
-        </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-    <div class="textbox shadow">
-        No price data available.
-    </div>
-    {% endif %}
-</div>
 
 <div id="tab-details" class="tab">
     <h2>Details</h2>
+</div>
+{#
 
     <table class="shadow cellborder">
         {% if product.genres %}
