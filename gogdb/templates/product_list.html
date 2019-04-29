@@ -23,7 +23,12 @@
       <td class="col-thumb">
         <a href="{{ url_for('product_info', prod_id=product['id']) }}">
           {% if product['image'] %}
+          {% if 'glx_logo_2x' in product['image']['formatters'] %}
+          <img class="img-thumb" src="{{ product['image']['href'].replace('{formatter}', 'glx_logo_2x') }}" alt="">
+          {% else %}
           <img class="img-thumb" src="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][product['image']['formatters']|length-2]) }}" alt="">
+          {% endif %}
+
           {% else %}
           <img class="img-thumb" src="{{ url_for('static', filename='img/no_logo_1600x900.svg') }}" alt="">
           {% endif %}
