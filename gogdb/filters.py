@@ -1,5 +1,6 @@
 import jinja2
 import flask
+import re
 
 from gogdb import app
 
@@ -80,6 +81,24 @@ def prod_url(prod_id):
 def prod_urls(prod_ids):
     return jinja2.Markup(
         ", ".join(prod_url(prod_id) for prod_id in prod_ids))
+
+
+@app.template_filter("prod_detail")
+def prod_detail(prod_data, only=[], exclude=[]):
+    if len(only) != 0:
+        new_prod_data = dict()
+        for key in prod_data:
+            if key in only:
+                new_prod_data[re.sub('([A-Z][A-Za-z0-9])', r' \1', key).title()] = prod_data[key]
+        return new_prod_data
+    elif len(exclude) != 0:
+        new_prod_data = dict()
+        for key in prod_data:
+            if key not in exclude:
+                new_prod_data[re.sub('([A-Z][A-Za-z0-9])', r' \1', key).title()] = prod_data[key]
+        return new_prod_data
+    else:
+        return prod_data
 
 
 FILEFLAGS = ["executable", "hidden", "support"]

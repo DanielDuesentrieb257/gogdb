@@ -21,6 +21,9 @@ body{
     background-repeat: no-repeat;
 }
 {% endif %}
+.detail_title{
+    width: 200px;
+}
 </style>
 {% endblock style %}
 
@@ -52,7 +55,7 @@ body{
                 {% if product['developers'] | length < 1 %}
                 <td></td>
                 {% else %}
-                <td>{{ product['developers'][0] }}</td>
+                <td>{{ ', '.join(product['developers']) }}</td>
                 {% endif %}
             </tr>
             <tr>
@@ -60,7 +63,7 @@ body{
                 {% if product['publishers'] | length < 1 %}
                 <td></td>
                 {% else %}
-                <td>{{ product['publishers'][0] }}</td>
+                <td>{{ ', '.join(product['publishers']) }}</td>
                 {% endif %}
             </tr>
             <tr>
@@ -157,204 +160,43 @@ body{
 
 <div id="tab-details" class="tab">
     <h2>Details</h2>
-</div>
-{#
-
     <table class="shadow cellborder">
-        {% if product.genres %}
+        <tbody>
+        {% set newprod = product | prod_detail(['hasProductCard','inDevelopment', 'isInstallable', 'isPreorder', 'isSecret', 'isUsingDosBox', 'isVisibleInAccount', 'isVisibleInCatalog']) %}
+        {% for key in newprod %}
         <tr>
-            <td>Genres</td>
-            <td>{{ product.genres | comma_attr("name") }}</td>
-        </tr>
-        {% endif %}
-        <tr>
-            <td>Languages</td>
-            <td>{{ product.languages | comma_attr("name") }}</td>
-        </tr>
-        {% if product.features %}
-        <tr>
-            <td>Features</td>
-            <td>{{ product.features | comma_attr("name") }}</td>
-        </tr>
-        {% endif %}
-        <tr>
-            <td>Secret</td>
-            <td>{{ product.is_secret | yes_no }}</td>
-        </tr>
-        <tr>
-            <td>Price visible</td>
-            <td>{{ product.is_price_visible | yes_no }}</td>
-        </tr>
-        <tr>
-            <td>Reviews enabled</td>
-            <td>{{ product.can_be_reviewed | yes_no }}</td>
-        </tr>
-        <tr>
-            <td>Content system compatibility</td>
-            {% if product.cs_systems %}
-            <td>{{ product.cs_systems | os_icons }}</td>
-            {% else %}
-            <td>Incompatible</td>
-            {% endif %}
-        </tr>
-        <tr>
-            <td>Coming soon</td>
-            <td>{{ product.is_coming_soon | yes_no }}</td>
-        </tr>
-        <tr>
-            <td>Pre-order</td>
-            <td>{{ product.is_pre_order | yes_no }}</td>
-        </tr>
-        <tr>
-            <td>Development active</td>
-            <td>{{ product.development_active | yes_no }}</td>
-        </tr>
-    </table>
-
-    <h2>Links</h2>
-
-    <table class="shadow cellborder">
-        {% if product.access >= 2 %}
-        <tr>
-            <td class="table-prop">Product page</td>
-            <td>
-                <span class="force-overflow">
-                    <a href="https://www.gog.com/game/{{ product.slug }}">
-                        https://www.gog.com/game/{{ product.slug }}
-                    </a>
-                </span>
-            </td>
-        </tr>
-        {% endif %}
-        <tr>
-            <td class="table-prop">Forum</td>
-            <td>
-                <span class="force-overflow">
-                    <a href="https://www.gog.com/forum/{{ product.forum_id }}">
-                        https://www.gog.com/forum/{{ product.forum_id }}
-                    </a>
-                </span>
-            </td>
-        </tr>
-        {% if product.image_background %}
-        <tr>
-            <td class="table-prop">Background image</td>
-            <td>
-                <span class="force-overflow">
-                    <a href="https://images.gog.com/{{ product.image_background }}.jpg">
-                        https://images.gog.com/{{ product.image_background }}.jpg
-                    </a>
-                </span>
-            </td>
-        </tr>
-        {% endif %}
-        {% if product.image_logo %}
-        <tr>
-            <td class="table-prop">Logo image</td>
-            <td>
-                <span class="force-overflow">
-                    <a href="https://images.gog.com/{{ product.image_logo }}.jpg">
-                        https://images.gog.com/{{ product.image_logo }}.jpg
-                    </a>
-                </span>
-            </td>
-        </tr>
-        {% endif %}
-        {% if product.image_icon %}
-        <tr>
-            <td class="table-prop">Icon</td>
-            <td>
-                <span class="force-overflow">
-                    <a href="https://images.gog.com/{{ product.image_icon }}.png">
-                        https://images.gog.com/{{ product.image_icon }}.png
-                    </a>
-                </span>
-            </td>
-        </tr>
-        {% endif %}
-        <tr>
-            <td class="table-prop">Galaxy API</td>
-            <td>
-                <span class="force-overflow">
-                    <a href="https://api.gog.com/products/{{ product.id }}?expand=downloads,expanded_dlcs,description,screenshots,videos,related_products,changelog">
-                        https://api.gog.com/products/{{ product.id }}?expand=downloads,expanded_dlcs,description,screenshots,videos,related_products,changelog
-                    </a>
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td class="table-prop">Builds Windows</td>
-            <td>
-                <div class="force-overflow">
-                    <a href="https://content-system.gog.com/products/{{ product.id }}/os/windows/builds?generation=2">
-                        https://content-system.gog.com/products/{{ product.id }}/os/windows/builds?generation=2
-                    </a>
-                </div>
-            </td>
-        </tr>
-        {% if product.systems and "mac" in product.systems %}
-        <tr>
-            <td class="table-prop">Builds macOS</td>
-            <td>
-                <div class="force-overflow">
-                    <a href="https://content-system.gog.com/products/{{ product.id }}/os/osx/builds?generation=2">
-                        https://content-system.gog.com/products/{{ product.id }}/os/osx/builds?generation=2
-                    </a>
-                </div>
-            </td>
-        </tr>
-        {% endif %}
-        {% if product.access >= 2 %}
-        <tr>
-            <td class="table-prop">gogData</td>
-            <td>
-                <span class="force-overflow">
-                    <a href="{{ url_for('gogdata', slug=product.slug, _external=True) }}">
-                        {{ url_for('gogdata', slug=product.slug, _external=True) }}
-                    </a>
-                </span>
-            </td>
-        </tr>
-        {% endif %}
-    </table>
-
-    {% if product.dlcs %}
-    <h2>DLCs</h2>
-
-    <table id="dlc-table" class="shadow rowborder">
-        <tr>
-            <th></th>
-            <th>ID</th>
-            <th>Name</th>
-        </tr>
-        {% for dlc_prod in product.dlcs %}
-        <tr>
-            <td class="col-thumb">
-                <a href="{{ url_for('product_info', prod_id=dlc_prod.id) }}">
-                    {% if dlc_prod.image_logo %}
-                    <img class="img-thumb" src="{{ dlc_prod.image_logo | gog_image('_196.jpg') }}" alt="">
-                    {% else %}
-                    <img class="img-thumb" src="{{ url_for('static', filename='img/no_logo_1600x900.svg') }}" alt="">
-                    {% endif %}
-                </a>
-            </td>
-            <td class="col-id">
-                <a href="{{ url_for('product_info', prod_id=dlc_prod.id) }}" class="hoveronly">
-                    {{ dlc_prod.id }}
-                </a>
-            </td>
-            <td class="col-name">
-                <a href="{{ url_for('product_info', prod_id=dlc_prod.id) }}" class="hoveronly">
-                    {{ dlc_prod.title }}
-                </a>
-            </td>
+            <td class="detail_title">{{ key }}</td>
+            <td>{{ newprod[key] | yes_no }}</td>
         </tr>
         {% endfor %}
+
+        {% set newprod = product | prod_detail(['tags', 'features']) %}
+        {% for key in newprod %}
+        {% if newprod[key] | length > 0 %}
+        <tr>
+            <td class="detail_title">{{ key }}</td>
+            <td>{{ ', '.join(newprod[key]) }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+
+        {% set newprod = product | prod_detail(['editions', 'requiredByGames', 'requiresGames', 'includedInGames', 'includesGames'])%}
+        {% for key in newprod %}
+        {% if newprod[key] | length > 0 %}
+        <tr>
+            <td class="detail_title">{{ key }}</td>
+            <td>
+                {% for prod in newprod[key] %}
+                {{ prod | prod_url }} 
+                {% endfor %}
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        </tbody>
     </table>
-    {% endif %}
 </div>
-
-
+{#
 <div id="tab-downloads" class="tab">
     <h2>Downloads</h2>
 

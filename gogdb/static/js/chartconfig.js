@@ -26,8 +26,8 @@ function init_chart()
         label: "Discount",
         fill: false,
         steppedLine: true,
-        borderColor: "rgb(241, 142, 0)",
-        backgroundColor: "rgb(241, 142, 0)",
+        borderColor: "rgb(120, 56, 123)",
+        backgroundColor: "rgb(120, 56, 123)",
         data: discount["values"],
       }]
     },
