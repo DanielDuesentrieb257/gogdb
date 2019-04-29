@@ -5,57 +5,63 @@
 {% block content %}
 <h1>{{ title }}</h1>
 <form id="product-search" class="search-bar shadow" action="{{ url_for('product_list') }}">
-  <input id="product-search-input" class="search-input" class="shadow" type="search" name="search" placeholder="Search..." value="{{ search }}" autofocus>
-  <button id="product-search-button" class="search-button" type="submit"><i class="fa fa-search" aria-hidden="true"></i><span class="nocss">Search</span></button>
+    <input id="product-search-input" class="search-input" class="shadow" type="search" name="search" placeholder="Search..." value="{{ search }}" autofocus>
+    <button id="product-search-button" class="search-button" type="submit"><i class="fa fa-search" aria-hidden="true"></i><span class="nocss">Search</span></button>
 </form>
 
 <div id="result-container">
-  <table id="product-table" class="shadow rowborder">
-    <tr>
-      <th></th>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Systems</th>
-    </tr>
-    {% for product in products %}
-    <tr>
-      <td class="col-thumb">
-        <a href="{{ url_for('product_info', prod_id=product['id']) }}">
-          {% if product['image'] %}
-          {% if 'glx_logo_2x' in product['image']['formatters'] %}
-          <img class="img-thumb" src="{{ product['image']['href'].replace('{formatter}', 'glx_logo_2x') }}" alt="">
-          {% else %}
-          <img class="img-thumb" src="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][product['image']['formatters']|length-2]) }}" alt="">
-          {% endif %}
+    <table id="product-table" class="shadow rowborder">
+        <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Systems</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td class="col-thumb">
+                <a href="{{ url_for('product_info', prod_id=product['id']) }}">
+                    {% if product['image'] %}
+                    {% if 'glx_logo' in product['image']['formatters'] %}
+                    <picture>
+                    <source class="image-thumb" srcset="{{ product['image']['href'].replace('{formatter}', 'glx_logo').replace('png', 'webp') }}" type="image/webp">
+                        <img class="img-thumb" src="{{ product['image']['href'].replace('{formatter}', 'glx_logo') }}" alt="">
+                    </picture>
+                    {% else %}
+                    <picture>
+                    <source class="img-thumb" srcset="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][product['image']['formatters']|length-2]).replace('png', 'webp') }}" alt="">
+                        <img class="img-thumb" src="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][product['image']['formatters']|length-2]) }}" alt="">
+                    </picture>
+                    {% endif %}
 
-          {% else %}
-          <img class="img-thumb" src="{{ url_for('static', filename='img/no_logo_1600x900.svg') }}" alt="">
-          {% endif %}
-        </a>
-      </td>
-      <td class="col-id">
-        {{ product['id'] | prod_url }}
-      </td>
-      {#
-      {% if product.access < 2 %}
-      <td class="col-name prod-unlisted">
-      {% else %}
-      <td class="col-name">
-      {% endif %}
-      #}
-      <td class="col-name">
-        <a href="{{ url_for('product_info', prod_id=product['id']) }}" class="hoveronly">
-          {{ product['title'] }}
-        </a>
-      </td>
-      <td class="col-type">{{ product['productType'] }}</td>
-      <td class="col-os">{{ product['supportedOS'] | os_icons }}</td>
-    </tr>
-    {% endfor %}
-  </table>
+                    {% else %}
+                    <img class="img-thumb" src="{{ url_for('static', filename='img/no_logo_1600x900.svg') }}" alt="">
+                    {% endif %}
+                </a>
+            </td>
+            <td class="col-id">
+                {{ product['id'] | prod_url }}
+            </td>
+            {#
+            {% if product.access < 2 %}
+            <td class="col-name prod-unlisted">
+                {% else %}
+                <td class="col-name">
+                    {% endif %}
+                    #}
+                    <td class="col-name">
+                        <a href="{{ url_for('product_info', prod_id=product['id']) }}" class="hoveronly">
+                            {{ product['title'] }}
+                        </a>
+                    </td>
+                    <td class="col-type">{{ product['productType'] }}</td>
+                    <td class="col-os">{{ product['supportedOS'] | os_icons }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
-  {% include "pagination.html" %}
+    {% include "pagination.html" %}
 </div>
 
 {% endblock content %}
