@@ -16,8 +16,8 @@ fonts_all = flask_assets.Bundle(
 
 js_prodinfo = flask_assets.Bundle(
     "js/moment.js",
-    "js/Chart.js",
     "js/chartconfig.js",
+    "js/Chart.min.js",
     "js/tabs.js",
     filters="rjsmin",
     output="js/product.%(version)s.js")

@@ -41,6 +41,7 @@ function init_chart()
           type: "time",
           time: {
             tooltipFormat: "MMM D, YYYY",
+            unit: "day",
           }
         }],
         yAxes: [{
