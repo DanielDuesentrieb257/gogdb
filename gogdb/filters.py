@@ -88,17 +88,28 @@ def prod_detail(prod_data, only=[], exclude=[]):
     if len(only) != 0:
         new_prod_data = dict()
         for key in prod_data:
-            if key in only:
+            if key in only and prod_data[key] != None:
                 new_prod_data[re.sub('([A-Z][A-Za-z0-9])', r' \1', key).title()] = prod_data[key]
         return new_prod_data
     elif len(exclude) != 0:
         new_prod_data = dict()
         for key in prod_data:
-            if key not in exclude:
+            if key not in exclude and prod_data[key] != None:
                 new_prod_data[re.sub('([A-Z][A-Za-z0-9])', r' \1', key).title()] = prod_data[key]
         return new_prod_data
     else:
         return prod_data
+
+
+@app.template_filter("loc")
+def loc(loc_data):
+    fmt_loc = dict()
+    for ld in loc_data:
+        if ld['name'] in fmt_loc:
+            fmt_loc[ld['name']].append(ld['type'])
+        else:
+            fmt_loc[ld['name']] = [ld['type']]
+    return fmt_loc
 
 
 FILEFLAGS = ["executable", "hidden", "support"]

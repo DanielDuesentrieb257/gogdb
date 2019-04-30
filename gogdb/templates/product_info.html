@@ -4,10 +4,18 @@
 
 {% set title %}{{ product['title'] | default("Unknown", true) }}{% endset %}
 
+{% block link %}
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.12/css/lightgallery.min.css" />
+{% endblock link %}
+
 {% block js %}
 {% assets "js-prodinfo" %}
 <script type="text/javascript" src="{{ ASSET_URL }}"></script>
 {% endassets %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.12/js/lightgallery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lg-thumbnail/1.1.0/lg-thumbnail.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lg-fullscreen/1.1.0/lg-fullscreen.min.js"></script>
 <script type="application/json" id="discount-json">
     {{ discount | tojson | safe }}
 </script>
@@ -121,10 +129,11 @@ body{
 <div id="tabs-container" class="shadow">
     <a href="#prices" class="tabs-item no-underline">Prices</a>
     <a href="#details" class="tabs-item no-underline">Details</a>
+    <a href="#localizations" class="tabs-item no-underline">Localizations</a>
+    <a href="#media" class="tabs-item no-underline">Media</a>
     {#
     <a href="#downloads" class="tabs-item no-underline">Downloads</a>
     <a href="#builds" class="tabs-item no-underline">Builds</a>
-    <a href="#media" class="tabs-item no-underline">Media</a>
     <a href="#changelog" class="tabs-item no-underline">Changelog</a>
     #}
 </div>
@@ -193,8 +202,79 @@ body{
         </tr>
         {% endif %}
         {% endfor %}
+
+        {% if product['image'] %}
+        <tr>
+            <td class="detail_title">Image</td>
+            <td>
+                {% for formatter in product['image']['formatters'] %}
+                <a href={{product['image']['href'].replace('{formatter}', formatter) }}>{{ formatter }}</a><br>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endif %}
+
+        {% set oimage = product['links'] | prod_detail(['backgroundImage', 'galaxyBackgroundImage', 'boxArtImage', 'icon', 'iconSquare', 'logo']) %}
+        {% if oimage | length > 0 %}
+        <tr>
+            <td class="detail_title">Other Image</td>
+            <td>
+                {% for key in oimage %}
+                {% if oimage[key] %}
+                <a href={{ oimage[key] }}>{{ key }}</a><br>
+                {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endif %}
+
         </tbody>
     </table>
+</div>
+
+<div id="tab-localizations" class="tab">
+    <h2>Localizations</h2>
+    {% set locs = product['localizations'] | loc %}
+    {% if locs | length > 0 %}
+    <table class="shadow cellborder">
+        <tr>
+            <th>Language</th>
+            <th>Type</th>
+        </tr>
+        {% for lo in locs %}
+        <tr>
+            <td style="width: 50%;">{{ lo }}</td>
+            <td>{{ ', '.join(locs[lo]) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="shadow textbox">
+        No localization data available.
+    </div>
+    {% endif %}
+</div>
+<div id="tab-media" class="tab">
+    <h2>Media</h2>
+    {% if product['screenshots'] %}
+    <div class="shadow" style="background-color: #e1e1e1; padding: 10px 20px">
+        <h3>ScreenShots</h3>
+    <div id="screenshots">
+        {% for sc in product['screenshots'] %}
+        <a href={{ sc['href'].replace('{formatter}', sc['formatters'][0]) }} style="text-decoration: none;">
+            <picture>
+            {% if 'product_card_screenshot_748' in sc['formatters'] %}
+            <source class="shadow zoom" srcset={{ sc['href'].replace('{formatter}', 'product_card_screenshot_748').replace('jpg', 'webp') }} type="image/webp" style="width: 22%;">
+                <img class="shadow zoom" src={{ sc['href'].replace('{formatter}', 'product_card_screenshot_748') }} style="width: 22%;">
+                {% endif %}
+            </picture>
+        </a>
+        {% endfor %}
+    </div>
+    <script>
+        $('#screenshots').lightGallery();
+    </script>
+    {% endif %}
 </div>
 {#
 <div id="tab-downloads" class="tab">
