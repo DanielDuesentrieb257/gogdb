@@ -96,7 +96,7 @@ body{
         {% if product['image'] %}
         <a href="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][0]) }}" target="_blank">
             <picture>
-                <source id="product-logo" class="shadow zoom" srcset="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][product['image']['formatters']|length-2]).replace('png', 'webp') }}" type="image/webp">
+            <source id="product-logo" class="shadow zoom" srcset="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][product['image']['formatters']|length-2]).replace('png', 'webp') }}" type="image/webp">
                 <img id="product-logo" class="shadow zoom" src="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][product['image']['formatters']|length-2]) }}" alt="">
             </picture>
         </a>
@@ -171,62 +171,62 @@ body{
     <h2>Details</h2>
     <table class="shadow cellborder">
         <tbody>
-        {% set newprod = product | prod_detail(['hasProductCard','inDevelopment', 'isInstallable', 'isPreorder', 'isSecret', 'isUsingDosBox', 'isVisibleInAccount', 'isVisibleInCatalog']) %}
-        {% for key in newprod %}
-        <tr>
-            <td class="detail_title">{{ key }}</td>
-            <td>{{ newprod[key] | yes_no }}</td>
-        </tr>
-        {% endfor %}
+            {% set newprod = product | prod_detail(['hasProductCard','inDevelopment', 'isInstallable', 'isPreorder', 'isSecret', 'isUsingDosBox', 'isVisibleInAccount', 'isVisibleInCatalog']) %}
+            {% for key in newprod %}
+            <tr>
+                <td class="detail_title">{{ key }}</td>
+                <td>{{ newprod[key] | yes_no }}</td>
+            </tr>
+            {% endfor %}
 
-        {% set newprod = product | prod_detail(['tags', 'features']) %}
-        {% for key in newprod %}
-        {% if newprod[key] | length > 0 %}
-        <tr>
-            <td class="detail_title">{{ key }}</td>
-            <td>{{ ', '.join(newprod[key]) }}</td>
-        </tr>
-        {% endif %}
-        {% endfor %}
+            {% set newprod = product | prod_detail(['tags', 'features']) %}
+            {% for key in newprod %}
+            {% if newprod[key] | length > 0 %}
+            <tr>
+                <td class="detail_title">{{ key }}</td>
+                <td>{{ ', '.join(newprod[key]) }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
 
-        {% set newprod = product | prod_detail(['editions', 'requiredByGames', 'requiresGames', 'includedInGames', 'includesGames'])%}
-        {% for key in newprod %}
-        {% if newprod[key] | length > 0 %}
-        <tr>
-            <td class="detail_title">{{ key }}</td>
-            <td>
-                {% for prod in newprod[key] %}
-                {{ prod | prod_url }} 
-                {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
-        {% endfor %}
+            {% set newprod = product | prod_detail(['editions', 'requiredByGames', 'requiresGames', 'includedInGames', 'includesGames'])%}
+            {% for key in newprod %}
+            {% if newprod[key] | length > 0 %}
+            <tr>
+                <td class="detail_title">{{ key }}</td>
+                <td>
+                    {% for prod in newprod[key] %}
+                    {{ prod | prod_url }} 
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
 
-        {% if product['image'] %}
-        <tr>
-            <td class="detail_title">Image</td>
-            <td>
-                {% for formatter in product['image']['formatters'] %}
-                <a href={{product['image']['href'].replace('{formatter}', formatter) }}>{{ formatter }}</a><br>
-                {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
+            {% if product['image'] %}
+            <tr>
+                <td class="detail_title">Image</td>
+                <td>
+                    {% for formatter in product['image']['formatters'] %}
+                    <a href={{product['image']['href'].replace('{formatter}', formatter) }}>{{ formatter }}</a><br>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endif %}
 
-        {% set oimage = product['links'] | prod_detail(['backgroundImage', 'galaxyBackgroundImage', 'boxArtImage', 'icon', 'iconSquare', 'logo']) %}
-        {% if oimage | length > 0 %}
-        <tr>
-            <td class="detail_title">Other Image</td>
-            <td>
-                {% for key in oimage %}
-                {% if oimage[key] %}
-                <a href={{ oimage[key] }}>{{ key }}</a><br>
-                {% endif %}
-                {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
+            {% set oimage = product['links'] | prod_detail(['backgroundImage', 'galaxyBackgroundImage', 'boxArtImage', 'icon', 'iconSquare', 'logo']) %}
+            {% if oimage | length > 0 %}
+            <tr>
+                <td class="detail_title">Other Image</td>
+                <td>
+                    {% for key in oimage %}
+                    {% if oimage[key] %}
+                    <a href={{ oimage[key] }}>{{ key }}</a><br>
+                    {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endif %}
 
         </tbody>
     </table>
@@ -259,22 +259,26 @@ body{
     {% if product['screenshots'] %}
     <div class="shadow" style="background-color: #e1e1e1; padding: 10px 20px">
         <h3>ScreenShots</h3>
-    <div id="screenshots">
-        {% for sc in product['screenshots'] %}
-        <a href={{ sc['href'].replace('{formatter}', sc['formatters'][0]) }} style="text-decoration: none;">
-            <picture>
-            {% if 'product_card_screenshot_748' in sc['formatters'] %}
-            <source class="shadow zoom" srcset={{ sc['href'].replace('{formatter}', 'product_card_screenshot_748').replace('jpg', 'webp') }} type="image/webp" style="width: 22%;">
-                <img class="shadow zoom" src={{ sc['href'].replace('{formatter}', 'product_card_screenshot_748') }} style="width: 22%;">
+        <div id="screenshots">
+            {% for sc in product['screenshots'] %}
+            <a href={{ sc['href'].replace('{formatter}', sc['formatters'][0]) }} style="text-decoration: none;">
+                <picture>
+                {% if 'product_card_screenshot_748' in sc['formatters'] %}
+                <source class="shadow zoom" srcset={{ sc['href'].replace('{formatter}', 'product_card_screenshot_748').replace('jpg', 'webp') }} type="image/webp" style="width: 22%;">
+                    <img class="shadow zoom" src={{ sc['href'].replace('{formatter}', 'product_card_screenshot_748') }} style="width: 22%;">
+                {% else %}
+                <source class="shadow zoom" srcset={{ sc['href'].replace('{formatter}', sc['formatters'][0]).replace('jpg', 'webp') }} type="image/webp" style="width: 22%;">
+                    <img class="shadow zoom" src={{ sc['href'].replace('{formatter}', sc['formatters'][0]) }} style="width: 22%;">
                 {% endif %}
-            </picture>
-        </a>
-        {% endfor %}
+                </picture>
+            </a>
+            {% endfor %}
+        </div>
+        <script>
+            $('#screenshots').lightGallery();
+        </script>
+        {% endif %}
     </div>
-    <script>
-        $('#screenshots').lightGallery();
-    </script>
-    {% endif %}
 </div>
 {#
 <div id="tab-downloads" class="tab">
