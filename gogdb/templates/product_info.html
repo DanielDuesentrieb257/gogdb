@@ -94,12 +94,17 @@ body{
     </div>
     <div id="info-container-right">
         {% if product['image'] %}
-        <a href="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][0]) }}" target="_blank">
+        <a id="product-logo-gallery" href="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][0]) }}" >
             <picture>
             <source id="product-logo" class="shadow zoom" srcset="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][product['image']['formatters']|length-2]).replace('png', 'webp') }}" type="image/webp">
                 <img id="product-logo" class="shadow zoom" src="{{ product['image']['href'].replace('{formatter}', product['image']['formatters'][product['image']['formatters']|length-2]) }}" alt="">
             </picture>
         </a>
+        <script>
+            $('#product-logo-gallery').lightGallery({
+                selector: 'this'
+            });
+        </script>
         {% else %}
         <img id="product-logo" class="shadow" src="{{ url_for('static', filename='img/no_logo_1600x900.svg') }}" alt="">
         {% endif %}
