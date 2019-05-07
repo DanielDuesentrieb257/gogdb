@@ -155,6 +155,26 @@ body{
     </div>
     {% endif %}
     {% if baseprice | length > 0 %}
+    {% set nowcountry = request.headers.get('CF-IPCountry', None) %}
+    {% if nowcountry %}
+    <h4>Current Country Base Price</h4>
+    <table class="shadow cellborder">
+        <tr>
+            {% for price in baseprice %}
+            {% if price['country'] == nowcountry %}
+            <td>
+                <img src="https://www.countryflags.io/{{ price['country'].lower() }}/shiny/32.png">
+                {{ countries[price['country']] }}
+            </td>
+            <td>{{ price['country'] }}</td>
+            <td>{{ price['price'] }}</td>
+            <td>{{ price['currency'] }}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+    </table>
+    {% endif %}
+    <h4>Global Base Price</h4>
     <table id="price-table" class="shadow cellborder">
         <thead>
         <tr>
