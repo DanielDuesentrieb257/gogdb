@@ -40,11 +40,11 @@ body{
 {% endblock style %}
 
 {% block content %}
-<div style="padding-top:5px; padding-bottom:5px; margin-bottom:0px;">
+<div style="padding-top:5px; padding-bottom:5px; margin-bottom:5px;">
     {% if product['links']['icon'] %}
     <img src={{ product['links']['icon'] }} alt width="64" height="64" style="display: inline-block; float: left; margin-right:5px;"/>
     {% endif %}
-    <h1 style="white-space: nowrap; ">{{ title }}</h1>
+    <h1 style="white-space: nowrap; margin-top:8px;">{{ title }}</h1>
 </div>
 
 <div id="info-container">
