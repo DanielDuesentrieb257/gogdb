@@ -117,6 +117,7 @@ class API():
         self.__hosts['price'] = f"{self.__hosts['root']}/price"
         self.__hosts['discount'] = f"{self.__hosts['root']}/discount"
         self.__hosts['changes'] = f"{self.__hosts['root']}/changes"
+        self.__hosts['country'] = "https://countrycode.org/api/countryCode/countryMenu"
 
         self.__retries = retries
         self.__logger = logging.getLogger('GOGDB.DISCORDBOT')
@@ -224,4 +225,12 @@ class API():
                 return dict()
             else:
                 return changes
+
+    async def get_countries(self):
+        async with APIRequester(self.__retries) as request:
+            jsondata = await request.getjson(self.__hosts['country'])
+            countries = dict()
+            for data in jsondata:
+                countries[data['code'].upper()] = data['name']
+            return countries
 

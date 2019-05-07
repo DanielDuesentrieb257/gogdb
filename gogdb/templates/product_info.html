@@ -6,6 +6,8 @@
 
 {% block link %}
 <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.12/css/lightgallery.min.css" />
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap4.min.css" />
 {% endblock link %}
 
 {% block js %}
@@ -16,6 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.12/js/lightgallery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lg-thumbnail/1.1.0/lg-thumbnail.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lg-fullscreen/1.1.0/lg-fullscreen.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script type="application/json" id="discount-json">
     {{ discount | tojson | safe }}
 </script>
@@ -151,20 +155,34 @@ body{
     </div>
     {% endif %}
     {% if baseprice | length > 0 %}
-    <table class="shadow cellborder">
+    <table id="price-table" class="shadow cellborder">
+        <thead>
         <tr>
-            <th>CountryCode</th>
-            <th>BasePrice</th>
+            <th>Country</th>
+            <th>Country Code</th>
+            <th>Base Price</th>
             <th>Currency</th>
         </tr>
+        </thead>
+        <tbody>
         {% for price in baseprice %}
         <tr>
+            <td>
+                <img src="https://www.countryflags.io/{{ price['country'].lower() }}/shiny/32.png">
+                {{ countries[price['country']] }}
+            </td>
             <td>{{ price['country'] }}</td>
             <td>{{ price['price'] }}</td>
             <td>{{ price['currency'] }}</td>
         </tr>
         {% endfor %}
+        </tbody>
     </table>
+    <script>
+        $(document).ready(function() {
+            $('#price-table').DataTable();
+        });
+    </script>
     {% else %}
     <div class="textbox shadow">
         No price data available.
