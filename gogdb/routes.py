@@ -11,7 +11,7 @@ def includeme(config):
     config.add_route("changelog_ext", "/changelog-ext")
     config.add_route("changelog_atom", "/changelog.xml")
     config.add_route("gogdata", "/gogdata/{slug}")
-    config.add_route("robots", "/robots.txt")
+    config.add_route("sitemap", "/sitemap.xml")
     config.add_route("legal", "/legal")
 
     config.add_static_view(
